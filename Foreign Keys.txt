@@ -1,0 +1,107 @@
+TABLA USUARIOS
+
+alter table mibd.usuarios
+add constraint FK_dep_id 
+foreign key (idDepartamento) references mibd.departamentos(idDepartamento)
+on update cascade;
+
+-----------------------------------------------------------------------------
+
+TABLA PRESUPUESTOSVENTAS
+
+# FK para la columna IDCLIENTE 
+
+alter table mibd.presupuestosventas
+add constraint FK_cli_id 
+foreign key (idCliente) references mibd.clientes(idCliente)
+on update cascade;
+
+# FK para la columna IDVENDEDOR 
+
+alter table mibd.presupuestosventas
+add constraint FK_usr_id 
+foreign key (idVendedor) references mibd.usuarios(idUsuario)
+on update cascade;
+
+# FK para la columna IDPRODUCTO 
+
+alter table mibd.presupuestosventas
+add constraint FK_pro_id 
+foreign key (idProducto) references mibd.productos(idProducto)
+on update cascade;
+
+
+-----------------------------------------------------------------------------
+
+TABLA PRESUPUESTOSCOMPRAS
+
+# FK para la columna IDPROVEEDOR
+
+alter table mibd.presupuestoscompras
+add constraint FK_prov_id 
+foreign key (idProveedor) references mibd.proveedores(idProveedor)
+on update cascade;
+
+# FK para la columna IDCOMPRADOR
+
+alter table mibd.presupuestoscompras
+add constraint FK_user_id 
+foreign key (idComprador) references mibd.usuarios(idUsuario)
+on update cascade;
+
+# FK para la columna IDPRODUCTO 
+
+alter table mibd.presupuestoscompras
+add constraint FK_prod_id 
+foreign key (idProducto) references mibd.productos(idProducto)
+on update cascade;
+
+-----------------------------------------------------------------------------
+
+TABLA FACTURASCOMPRAS
+
+# FK para la columna IDPRESUPUESTOCOMPRA
+
+alter table mibd.facturascompras
+add constraint FK_pCo_id 
+foreign key (idPresupuestoCompra) references mibd.presupuestoscompras(idPresupuesto)
+on update cascade;
+
+-----------------------------------------------------------------------------
+
+TABLA FACTURASVENTAS
+
+# FK para la columna IDPRESUPUESTOVENTA
+
+alter table mibd.facturasventas
+add constraint FK_pVe_id 
+foreign key (idPresupuestoventa) references mibd.presupuestosventas(idPresupuesto)
+on update cascade;
+
+
+-----------------------------------------------------------------------------
+
+TABLA PRODUCTOSCOMPRADOS
+
+# FK para la columna IDPRODUCTO
+
+alter table mibd.ordenproduccion
+add constraint FK_idProd
+foreign key (idProducto) references mibd.productoscomprados(idProducto)
+on update cascade;
+
+# FK para la columna IDPRODUCTOR
+
+alter table mibd.ordenproduccion
+add constraint FK_usu_id 
+foreign key (idProductor) references mibd.usuarios(idUsuario)
+on update cascade;
+
+# FK para la columna IDPRODUCTOFINAL
+
+alter table mibd.ordenproduccion
+add constraint FK_pfi_id
+foreign key (idProductoFinal) references mibd.productoscreados(idProducto)
+on update cascade;
+
+
