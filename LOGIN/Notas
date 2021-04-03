@@ -1,0 +1,23 @@
+Mª Jose Simón Rodríguez
+Pasos en el programa:
+1. (Main) Creación del diccionario con usuarios y contraseñas
+2. (Main) Meter en el bucle para que solicite usuarios y contraseñas, finaliza cuando "continuar = n"
+3. (Recorrer)Despues de meter el usuario, recorre el diccionario para ver si hay algun otro usuario igual.
+4. (GeneradorPassw)si no encuentra el usuario, accede a la función de GeneradorPassw.generadorPW()
+5. (GeneradorPassw) En esta funcion solicitamos longitud, que debe mayor de 0 caracteres para poder continuar.
+6. (GeneradorPassw) Y tambien nos preguntará si quiere que tenga may, min, numeros o simbolos. Al menos debe contener una opción.
+El objetivo del bucle for del diccionario creado es debido a que podemos decir que tengamos una contraseña que tenga 3 digitos de longitud,
+ y posteriormente se solicita que tenga may, min, simbolos, numeros.
+No puede contener todas las opciones ya que si solo tiene 3 digitos, es imposible tener todas las opciones. (no se si me explico)
+Devuelve un listado de true/false.
+
+7. (Main) Se almacena un listado "seguridad" de boolean que deben cumplir para crear la contraseña.
+8. (Fortaleza)Una vez indicados los parámetros, sabemos que fortaleza tendra la contraseña y mostramos por pantalla si es fuerte, debil o media.
+ Para ello utilizamos la funcion Fortaleza.
+9. (CrearPW)Despues creamos la contraseña.
+10 (CrearPW) Tengo dos funciones
+    Comprobar: para revisar si cumple la contraseña con los parametros marcados.
+    TuPW: aqui escribimos la contraseña.
+    Devuelve a Main cuando la contraseña escrita cumpla todos los requisitos marcados.
+11. (Main) añadimos el usuario y contraseña al diccionario, y mostramos todos.
+
