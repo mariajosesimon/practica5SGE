@@ -1,7 +1,19 @@
+'''Funcion para dar de alta usuarios.
+Desde el Departamento de RRHH se encargan de dar de alta los usuarios con todos los datos.
+Incluido usuario y contraseña.
+FUNCIONES REUTILIZADAS DE OTROS EJERCICIOS:
+- Chequear el NIF
+- Validar email
+- funcion "seleccion" en la seleccion del departamento.
+(envio de un dato int, + listado, y el nº que se escoja debe estar dentro del rango del listado)
+
+CONSULTAS A LA BASE DE DATOS:
+- Hacemos una select para saber los departamentos disponibles.
+'''
+
+
 from datetime import datetime
 import pymysql
-
-
 
 from Chequeos import CheckNIF, ValidarEmail, Seleccion
 from Chequeos.Seleccion import seleccion
@@ -16,6 +28,7 @@ def CrearUsuario(db):
     usuario = None
     contrasena = None
     email = None
+
 
     print("Datos para crear nuevo usuario.")
 
@@ -32,7 +45,6 @@ def CrearUsuario(db):
         print("Email: ")
         email = ValidarEmail.Email(input())
 
-
     print("Fecha de alta (yyyy-mm-dd): ")
     while True:
         try:
@@ -43,14 +55,14 @@ def CrearUsuario(db):
             print("No ha introducido una fecha correcta. Vuelva a intentarlo: ")
 
     activo = -1
-    while activo < 0 or activo > 2 :
+    while activo < 0 or activo > 2:
         print("Usuario Activo? Si = 1/ No = 0")
 
         try:
             activo = int(input())
         except:
             print("Dato no valido.")
-        print(activo)
+        #print(activo)
 
     consultaDepat = "select * from departamentos"
     cursor = db.cursor()
@@ -58,10 +70,9 @@ def CrearUsuario(db):
     departamentos = cursor.fetchall()
     nDepart = 0
 
-    print()
     for dep in departamentos:
         print(dep[0], " -> ", dep[1])
-        nDepart = nDepart +1
+        nDepart = nDepart + 1
 
     departamentoID = seleccion(-1, departamentos)
 
@@ -72,11 +83,9 @@ def CrearUsuario(db):
         print("Contraseña: ")
         contrasena = input().title()
 
+    datos = (nombre, apellidos, nif, fechaAlta, activo, departamentoID, usuario, contrasena, email)
+    insertarUSR = "INSERT INTO usuarios( NombreUSR, ApellidosUSR, NIF, FechaAlta, Activo, idDepartamento, usuario, password, email) VALUES (%s, %s, %s , %s, %s, %s, %s, %s, %s)"
 
-   # insertarUSR = 'INSERT INTO usuarios(NombreUSR, ApellidosUSR, NIF, FechaAlta, Activo, idDepartamento, usuario, password, email) VALUES ("'+nombre+'","'+apellidos+'","'+nif\
-    #              +'","'+fechaAlta+'","'+str(activo)+'","'+str(departamentoID)+'","'+usuario+'","'+contrasena+'","'+email+'")'
+    cursor.execute(insertarUSR, datos)
 
-   # print('INSERT INTO usuarios(NombreUSR, ApellidosUSR, NIF, FechaAlta, Activo, idDepartamento, usuario, password, email) VALUES ("'+nombre+'","'+apellidos+'","'+nif\#       +'","'+fechaAlta+'","'+activo+'","'+departamentoID+'","'+usuario+'","'+contrasena+'","'+email+'")')
-    datos = (nombre,apellidos,nif,fechaAlta,int(activo),int(departamentoID),usuario,contrasena,email)
-    print(datos)
-    cursor.execute("INSERT INTO usuarios(NombreUSR, ApellidosUSR, NIF, FechaAlta, Activo, idDepartamento, usuario, password, email) VALUES (?,?,?,?,?,?,?,?,?)",datos )
+    db.commit()

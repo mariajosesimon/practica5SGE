@@ -27,16 +27,16 @@ def seleccion(datoElegido, listado):
 
 def seleccion2(datoElegido, listado):
 
-    ids = []
+   # ids = []
 
-    for dato in listado:
-        ids.append(int(dato[0]))
+  #  for dato in listado:
+  #      ids.append(int(dato[0]))
 
 
-    while not(datoElegido in ids):
+    while not(datoElegido in listado):
         try:
             datoElegido = int(input())
-            if not(datoElegido in ids):
+            if not(datoElegido in listado):
                 print("Dato no valido. Vuelve a seleccionar.")
             else:
                 break
