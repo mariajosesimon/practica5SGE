@@ -177,6 +177,7 @@ def UpdateUSR(usuario, db):
 
             activoUSR = cursor.execute(consulta, usuario)
             print("Activo ", activoUSR)
+            printi("Activo type - ", type(activoUSR))
             if activoUSR == 1:
                 valor = 0
             else:
