@@ -63,7 +63,6 @@ def ModificarUSR(db):
             activo = -1
             while activo < 0 or activo > 2:
                 print("Mostrar Usuarios Activos? Si = 1/ No = 0")
-
                 try:
                     activo = int(input())
                 except:
@@ -72,8 +71,9 @@ def ModificarUSR(db):
             datos = (departamentoID, activo)
             consultaFiltro = "SELECT `idUsuario`,`NombreUSR`,`ApellidosUSR`,`NIF`,`FechaAlta`,`FechaBaja`,`Activo`,`usuario`,`password`,`email`, `NombreDepartamento` FROM `usuarios`, departamentos where usuarios.idDepartamento = departamentos.idDepartamento and departamentos.idDepartamento = %s  and usuarios.Activo = %s"
             idsUSR = MostrarDatosUSR(db, consultaFiltro, datos)
-            usuario = Seleccion.seleccion2(-1, idsUSR)
-            UpdateUSR(usuario, db)
+            if len(idsUSR) >0:
+                usuario = Seleccion.seleccion2(-1, idsUSR)
+                UpdateUSR(usuario, db)
             opcUpdateUSR = 3
 
 
@@ -151,7 +151,7 @@ def UpdateUSR(usuario, db):
             while (email == False or email == None):
                 print("Email: ")
                 email = ValidarEmail.Email(input())
-            campo = "email"
+            campo = 'email'
             valor = email
             datoMod = 4
         elif (datoMod - 1) == 1:  # ------------FECHA DE BAJA---------------
@@ -163,7 +163,7 @@ def UpdateUSR(usuario, db):
                     break
                 except:
                     print("No ha introducido una fecha correcta. Vuelva a intentarlo: ")
-            campo = "FechaBaja"
+            campo = 'FechaBaja'
             valor = fechaBaja
             datoMod = 4
 
@@ -175,22 +175,20 @@ def UpdateUSR(usuario, db):
             activoUSR = 9
             print("Activo -- usuario", activoUSR, usuario)
 
-            activoUSR = cursor.execute(consulta, usuario)
-            print("Activo ", activoUSR)
-            printi("Activo type - ", type(activoUSR))
-            if activoUSR == 1:
-                valor = 0
+            cursor.execute(consulta, usuario)
+            activoUSR = cursor.fetchone()
+
+            if activoUSR[0] == 1:
+                valor = '0'
             else:
-                valor = 1
-            campo = "Activo"
+                valor = '1'
+            campo = 'Activo'
             datoMod = 4
 
-
-    print("Valor", valor)
     datos = (campo, valor, usuario)
     actualizacion = "UPDATE usuarios SET %s = %s WHERE idUsuario = %s"
-
-    #print(datos)
-
     cursor.execute(actualizacion, datos)
     db.commit()
+
+
+
