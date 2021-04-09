@@ -16,7 +16,7 @@ from datetime import datetime
 import pymysql
 
 from Chequeos import CheckNIF, ValidarEmail, Seleccion
-from Chequeos.Seleccion import seleccion
+
 
 
 def CrearUsuario(db):
@@ -62,7 +62,7 @@ def CrearUsuario(db):
             activo = int(input())
         except:
             print("Dato no valido.")
-        #print(activo)
+
 
     consultaDepat = "select * from departamentos"
     cursor = db.cursor()
@@ -74,7 +74,7 @@ def CrearUsuario(db):
         print(dep[0], " -> ", dep[1])
         nDepart = nDepart + 1
 
-    departamentoID = seleccion(-1, departamentos)
+    departamentoID = Seleccion.seleccion(-1, departamentos)
 
     while usuario == None or usuario == "":
         print("Nombre usuario: ")

@@ -13,7 +13,6 @@ y necesito ver si está dentro del listado
 from datetime import datetime
 
 from Chequeos import Seleccion, ValidarEmail
-from Chequeos.Seleccion import seleccion
 
 
 def ModificarUSR(db):
@@ -58,7 +57,7 @@ def ModificarUSR(db):
                 print(dep[0], " -> ", dep[1])
                 nDepart = nDepart + 1
 
-            departamentoID = seleccion(-1, departamentos)
+            departamentoID = Seleccion.seleccion(-1, departamentos)
 
             activo = -1
             while activo < 0 or activo > 2:
@@ -71,7 +70,7 @@ def ModificarUSR(db):
             datos = (departamentoID, activo)
             consultaFiltro = "SELECT `idUsuario`,`NombreUSR`,`ApellidosUSR`,`NIF`,`FechaAlta`,`FechaBaja`,`Activo`,`usuario`,`password`,`email`, `NombreDepartamento` FROM `usuarios`, departamentos where usuarios.idDepartamento = departamentos.idDepartamento and departamentos.idDepartamento = %s  and usuarios.Activo = %s"
             idsUSR = MostrarDatosUSR(db, consultaFiltro, datos)
-            if len(idsUSR) >0:
+            if len(idsUSR) > 0:
                 usuario = Seleccion.seleccion2(-1, idsUSR)
                 UpdateUSR(usuario, db)
             opcUpdateUSR = 3
@@ -128,7 +127,6 @@ def MostrarDatosUSR(db, consulta, datos):
 
 
 def UpdateUSR(usuario, db):
-
     campo = None
     valor = None
     datoMod = -1
@@ -155,12 +153,22 @@ def UpdateUSR(usuario, db):
             valor = email
             datoMod = 4
         elif (datoMod - 1) == 1:  # ------------FECHA DE BAJA---------------
+
+            consultaFAlta = "select FechaAlta from usuarios where idUsuario = %s"
+            cursor.execute(consultaFAlta, usuario)
+            fAlta = cursor.fetchone()
+
             print("Fecha de baja (yyyy-mm-dd): ")
             while True:
                 try:
                     fechaBaja = input()
                     datetime.strptime(fechaBaja, '%Y-%m-%d')
-                    break
+                    if str(fAlta[0]) > fechaBaja:
+                        print(
+                            "La fecha de baja debe ser posterior a la fecha de alta. \nEscriba otra fecha (yyyy-mm-dd): ")
+                        fechaBaja = "mal"
+                    else:
+                        break
                 except:
                     print("No ha introducido una fecha correcta. Vuelva a intentarlo: ")
             campo = 'FechaBaja'
@@ -185,10 +193,6 @@ def UpdateUSR(usuario, db):
             campo = 'Activo'
             datoMod = 4
 
-    datos = (campo, valor, usuario)
-    actualizacion = "UPDATE usuarios SET %s = %s WHERE idUsuario = %s"
-    cursor.execute(actualizacion, datos)
+    actualizacion = "update usuarios set " + campo + " = '" + valor + "' WHERE idUsuario = '" + str(usuario) + "'"
+    cursor.execute(actualizacion)
     db.commit()
-
-
-

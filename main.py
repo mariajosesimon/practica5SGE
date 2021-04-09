@@ -2,6 +2,7 @@ import pymysql
 from MenuLogin import MenuLogin
 from LOGIN import Logon
 from RRHH import MenuRH
+from VENTAS import MenuVendedor
 
 #CREAMOS LA CONEXION
 db = pymysql.connect(host="127.0.0.1", user="root", db="mibd", port=3306)
@@ -27,9 +28,11 @@ while opc == -1 or opc < 3:
         if resuelve == 1: # ------------------RRHH--------------------
             MenuRH.RolRH(db)
             #ir al menu de RRHH
-        #elif resuelve == 2: # ------------------Compras--------------------
-         #   MenuVendedor.RolVendedor()
-        #elif resuelve == 3: # ------------------Ventas--------------------
+        #elif resuelve == 2:
+         #   MenuComprador.RolComprador()
+        elif resuelve == 3: # ------------------Compras--------------------
+            MenuVendedor.RolVendedor(db)
+        #elif resuelve == 2: # ------------------Ventas--------------------
          #   MenuProductor.RolProductor()
         #elif resuelve == 4: # ------------------Producción--------------------
             #menuproducción.
