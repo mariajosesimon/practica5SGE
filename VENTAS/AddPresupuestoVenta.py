@@ -23,7 +23,7 @@ def CrearPresupuestoVenta(db):
 
 # en esta funcion necesitamos antes de seguir si hay productos creados / producidos. Si no hay no continuamos.
     cursor = db.cursor()
-    print("Datos para crear nuevo presupuesto de venta. \n")
+
 
     # consultas necesarias y ejecuciones
     consultaClientes = "select idCliente, Nombre, Ciudad from Clientes"
@@ -38,7 +38,7 @@ def CrearPresupuestoVenta(db):
     if len(prodCreados) > 0:
         cursor.execute(consultaClientes)
         clientes = cursor.fetchall()
-
+        print("Datos para crear nuevo presupuesto de venta. \n")
 
         print("LISTADO DE CLIENTES. ELIGE UN CLIENTE.\n")
         print("|{:^4}|{:^20}|{:^20}|".format("ID", "CLIENTE", "CIUDAD"))
@@ -113,4 +113,4 @@ def CrearPresupuestoVenta(db):
 
         print("Se ha creado el presupuesto.")
     else:
-         print("No hay productos comprados para poder crear un producto.")
+         print("No hay productos creados para poder venderlos.")

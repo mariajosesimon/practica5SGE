@@ -1,5 +1,5 @@
+from VENTAS import AddCliente, AddPresupuestoVenta
 
-from VENTAS import AddCliente
 
 def RolVendedor(db):
 
@@ -27,12 +27,12 @@ def RolVendedor(db):
     # ---------------------------opcion 2 -  Crear presupuesto ---------------------------
         elif (opcVend - 1) == 1:
             # vamos a --> VENTAS -- AddPresupuestoVenta - funcion CrearPresupuestoVenta()
-           # AddPresupuestoVenta.CrearPresupuestoVenta()
+            AddPresupuestoVenta.CrearPresupuestoVenta(db)
             opcVend = -1
     # ---------------------------opcion 3 -  Facturar un presupuesto--------------------------
         elif (opcVend - 1) == 2:
             # vamos a --> VENTAS -- FacturarVenta -- FacturarVenta()
-          #  FacturarVenta.FacturarVenta()
+            FacturarVenta.FacturarVenta(db)
             opcVend = -1
     # ---------------------------opcion 4 -  Grafico Ventas--------------------------
         elif (opcVend - 1) == 3:
