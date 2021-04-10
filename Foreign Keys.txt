@@ -23,13 +23,6 @@ add constraint FK_usr_id
 foreign key (idVendedor) references mibd.usuarios(idUsuario)
 on update cascade;
 
-# FK para la columna IDPRODUCTO 
-
-alter table mibd.presupuestosventas
-add constraint FK_pro_id 
-foreign key (idProducto) references mibd.productos(idProducto)
-on update cascade;
-
 
 -----------------------------------------------------------------------------
 
@@ -105,3 +98,20 @@ foreign key (idProductoFinal) references mibd.productoscreados(idProducto)
 on update cascade;
 
 
+
+-----------------------------------------------------------------------------
+
+TABLA PRESVENTASPRODUCTOS
+
+# FK para la columna IDPRODUCTO
+
+alter table mibd.presventasproductos
+add constraint FK_idProd_Com
+foreign key (idProducto) references mibd.productoscomprados(idProducto)
+on update cascade;
+
+#FK para la la columna IDPRESUPUESTO
+alter table mibd.presventasproductos
+add constraint FK_idPres_Com
+foreign key (idPresupuesto) references mibd.presupuestosventas(idPresupuesto)
+on update cascade;
