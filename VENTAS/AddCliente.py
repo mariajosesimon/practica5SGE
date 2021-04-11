@@ -1,4 +1,4 @@
-import csv
+
 
 from Chequeos import ValidarEmail
 from Chequeos import CheckTelf
