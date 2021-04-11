@@ -3,7 +3,7 @@
 def CrearProducto(db):
     nombreProducto = None
     precio = 0.0
-    cantidad = None
+
 
     print("Datos para crear nuevo producto.")
 
@@ -18,16 +18,10 @@ def CrearProducto(db):
         except:
             print("El precio introducido no es válido.")
 
-    while cantidad == None:
-        try:
-            print("Cantidad a comprar: ")
-            cantidad = int(input())
-        except:
-            cantidad = None
-            print("Dato no valido.")
 
-    datos = (nombreProducto, precio, cantidad)
-    insertarProd = "INSERT INTO productoscomprados( NombreProducto, 	Precio, Stock) VALUES (%s, %s, %s)"
+
+    datos = (nombreProducto, precio)
+    insertarProd = "INSERT INTO productoscomprados( NombreProducto, Precio) VALUES (%s, %s )"
     cursor = db.cursor()
     cursor.execute(insertarProd, datos)
     print("Se ha añadido el producto a la base de datos.")

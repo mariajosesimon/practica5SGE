@@ -54,6 +54,9 @@ def CrearPresupuestoVenta(db):
                 if crearcliente == "SI":
                 # llamar a OPCIONESVENDEDOR - Addcliente - Crearcliente()
                     AddCliente.CrearCliente(db)
+#*****************************************************************************************************************
+#*****************ojo con este dato de cliente elegido = 1 o 0 lo sacaba del check id y ahora ya no lo tengo
+                #*****************************************************************************************************************
                     clienteElegido = 1
                 else:
                     clienteElegido = 0

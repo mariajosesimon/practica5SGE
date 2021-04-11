@@ -105,13 +105,24 @@ TABLA PRESVENTASPRODUCTOS
 
 # FK para la columna IDPRODUCTO
 
-alter table mibd.presventasproductos
-add constraint FK_idProd_Com
+alter table mibd.presupuestosventasproductos
+modify constraint FK_idProd_Com
 foreign key (idProducto) references mibd.productoscomprados(idProducto)
-on update cascade;
+on update cascade on delete cascade;
 
 #FK para la la columna IDPRESUPUESTO
 alter table mibd.presventasproductos
 add constraint FK_idPres_Com
 foreign key (idPresupuesto) references mibd.presupuestosventas(idPresupuesto)
 on update cascade;
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+borrar constraint
+ALTER TABLE dbo.DocExe   
+DROP CONSTRAINT FK_Column_B;   
