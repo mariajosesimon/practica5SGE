@@ -1,5 +1,5 @@
 # elegir rol comprador, vendedor, comercial y productor
-
+import Chequeos
 
 def rol():
     opc = -1

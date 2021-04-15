@@ -1,0 +1,2 @@
+- Encriptar contraseñas
+- dar formato con pantallas. 

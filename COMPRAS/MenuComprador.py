@@ -1,5 +1,6 @@
-from COMPRAS import AddProveedor, AddProducto, SolicitudPresupuesto
+from COMPRAS import AddProveedor, AddProducto, SolicitudPresupuesto, UpdatePresupuesto
 from LISTADOS import ListarPresupuestos
+
 
 def RolComprador(db):
 
@@ -10,7 +11,7 @@ def RolComprador(db):
           "\n     2. Añadir Producto "
           "\n     3. Solicitud de presupuesto de compra"
           "\n     4. Listar presupuestos"
-          "\n     5. Facturar una compra"
+          "\n     5. Modificar un presupuesto"
           "\n     6. Gráfico: productos/inversión"
           "\n     7. Salir\n"
           "\n -------ELIGE UNA OPCION: -----------\n")
@@ -40,10 +41,10 @@ def RolComprador(db):
             # vamos a --> LISTADOS - ListarPresupuestos - listarPresupuesto()
             ListarPresupuestos.listarPresupuestos(db, "compras")
             opcCom = -1
-    # ---------------------------opcion 5 -  Facturar presupuesto---------------------------
+    # ---------------------------opcion 5 -  Modificar presupuesto---------------------------
         elif (opcCom - 1) == 4:
             # vamos a --> OPCIONESCOMPRADOR - FacturarPresupuesto - FacturarPep()
-         #   FacturarPresupuesto.FacturarPrep()
+            UpdatePresupuesto.updatePres(db)
             opcCom = -1
      # ---------------------------opcion 6 -  Gráfico: productos/inversión---------------------------
         elif (opcCom - 1) == 5:

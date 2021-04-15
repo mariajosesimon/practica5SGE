@@ -33,15 +33,13 @@ def listarPresupuestos(db, entidad):
     cursor2.execute(consultaProd)
     productos = cursor2.fetchall()
 
-
-
     for presupuesto in presupuestos:
 
         print(guion.rjust(90, "-"))
         print("|{:^4}|{:^20}|{:^20}|{:^20}|".format(id, proveedor, fecha, comprador))
         print("|{:^4}|{:^20}|{:^20}|{:^20}|".format(presupuesto[0], presupuesto[1], str(presupuesto[2]), presupuesto[3]))
         print(guion.rjust(90, "-"))
-        print("|{:^4}|{:^20}|{:^20}|{:^20}|{:^20}|".format(espacio,productoNombre, cantidad, precio, total))
+        print("|{:^4}|{:^20}|{:^20}|{:^20}|{:^20}|".format(espacio, productoNombre, cantidad, precio, total))
 
         for producto in productos:
 
@@ -49,6 +47,7 @@ def listarPresupuestos(db, entidad):
 
                 totales = producto[2]*producto[3]
                 print("|{:^4}|{:^20}|{:^20}|{:^20}|{:^20}|".format(espacio, producto[1], producto[2], producto[3], totales))
+
 
 
 
