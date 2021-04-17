@@ -1,19 +1,20 @@
-from COMPRAS import AddProveedor, AddProducto, SolicitudPresupuesto, UpdatePresupuesto
+from COMPRAS import AddProveedor, AddProducto, SolicitudPresupuesto, UpdatePresupuesto, EliminarPresupuesto
 from LISTADOS import ListarPresupuestos
 
 
 def RolComprador(db):
 
     opcCom = -1
-    while opcCom == -1 or opcCom < 7:
+    while opcCom == -1 or opcCom < 8:
         print("\n ------------ COMPRAS -----------------\n"
           "\n     1. Añadir Proveedor "
           "\n     2. Añadir Producto "
           "\n     3. Solicitud de presupuesto de compra"
           "\n     4. Listar presupuestos"
           "\n     5. Modificar un presupuesto"
-          "\n     6. Gráfico: productos/inversión"
-          "\n     7. Salir\n"
+          "\n     6. Eliminar presupuesto "
+          "\n     7. Gráfico: productos/inversión"
+          "\n     8. Salir\n"
           "\n -------ELIGE UNA OPCION: -----------\n")
 
         try:
@@ -46,9 +47,9 @@ def RolComprador(db):
             # vamos a --> OPCIONESCOMPRADOR - FacturarPresupuesto - FacturarPep()
             UpdatePresupuesto.updatePres(db)
             opcCom = -1
-     # ---------------------------opcion 6 -  Gráfico: productos/inversión---------------------------
+     # ---------------------------opcion 6 -  Eliminar presupuesto---------------------------
         elif (opcCom - 1) == 5:
             # vamos a --> OPCIONESCOMPRADOR - GraficoCompras - GrafProvTotales()
-       #     GraficoCompras.GrafProvTotales()
+            EliminarPresupuesto.EliminarPres(db)
             opcCom = -1
 

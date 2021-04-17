@@ -33,7 +33,7 @@ TABLA PRESUPUESTOSCOMPRAS
 alter table mibd.presupuestoscompras
 add constraint FK_prov_id 
 foreign key (idProveedor) references mibd.proveedores(idProveedor)
-on update cascade;
+on update cascade ;
 
 # FK para la columna IDCOMPRADOR
 
@@ -48,6 +48,7 @@ alter table mibd.presupuestoscompras
 add constraint FK_prod_id 
 foreign key (idProducto) references mibd.productos(idProducto)
 on update cascade;
+
 
 -----------------------------------------------------------------------------
 
@@ -119,10 +120,12 @@ on update cascade;
 
 
 
+------------------------------------------
+TABLA PRESUPUESTOSCOMPRASPRODUCTOS
+alter table presupuestoscomprasproductos
+add constraint FK_idp_pre foreign key (idPresupuesto) references presupuestoscompras (idPresupuesto) on update cascade on delete cascade;
 
 
 --------------------------------------------------------------------------------
 
-borrar constraint
-ALTER TABLE dbo.DocExe   
-DROP CONSTRAINT FK_Column_B;   
+ 

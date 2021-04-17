@@ -1,0 +1,22 @@
+SACAR TODAS LAS CONSTRAINT DE UNA BASE DE DATOS
+
+SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+
+
+borrar constraint
+ALTER TABLE dbo.DocExe DROP CONSTRAINT FK_Column_B;  
+
+
+ALTER TABLE 	ordenproduccion	DROP CONSTRAINT	FK_idProd
+ALTER TABLE 	ordenproduccion	DROP CONSTRAINT	FK_pfi_id
+ALTER TABLE 	ordenproduccion	DROP CONSTRAINT	FK_usu_id
+ALTER TABLE 	presupuestoscompras	DROP CONSTRAINT	FK_prov_id
+ALTER TABLE 	presupuestoscompras	DROP CONSTRAINT	FK_user_id
+ALTER TABLE 	presupuestoscomprasproductos	DROP CONSTRAINT	FK_idp_pre
+ALTER TABLE 	presupuestosventas	DROP CONSTRAINT	FK_cli_id
+ALTER TABLE 	presupuestosventas	DROP CONSTRAINT	FK_usr_id
+ALTER TABLE 	presupuestosventas	DROP CONSTRAINT	presupuestosventas_ibfk_1
+ALTER TABLE 	presupuestosventasproductos	DROP CONSTRAINT	FK_idPres_Com
+
+
+
