@@ -17,6 +17,8 @@ ALTER TABLE 	presupuestosventas	DROP CONSTRAINT	FK_cli_id
 ALTER TABLE 	presupuestosventas	DROP CONSTRAINT	FK_usr_id
 ALTER TABLE 	presupuestosventas	DROP CONSTRAINT	presupuestosventas_ibfk_1
 ALTER TABLE 	presupuestosventasproductos	DROP CONSTRAINT	FK_idPres_Com
+alter table facturacomprasproductos drop constraint FK_idp_pre
 
+alter TABLE productoscomprados add COLUMN stock int; 
 
 
