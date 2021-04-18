@@ -1,4 +1,4 @@
-from COMPRAS import AddProveedor, AddProducto, SolicitudPresupuesto, UpdatePresupuesto, EliminarPresupuesto
+from COMPRAS import AddProveedor, AddProducto, SolicitudPresupuesto, UpdatePresupuesto, EliminarPresupuesto, FacturarCompra
 from LISTADOS import ListarPresupuestos
 
 
@@ -13,7 +13,7 @@ def RolComprador(db):
           "\n     4. Listar presupuestos"
           "\n     5. Modificar un presupuesto"
           "\n     6. Eliminar presupuesto "
-          "\n     7. Gráfico: productos/inversión"
+          "\n     7. Facturar un presupuesto "
           "\n     8. Salir\n"
           "\n -------ELIGE UNA OPCION: -----------\n")
 
@@ -53,3 +53,8 @@ def RolComprador(db):
             EliminarPresupuesto.EliminarPres(db)
             opcCom = -1
 
+    # ---------------------------opcion 7 -  Facturar presupuesto---------------------------
+        elif (opcCom - 1) == 6:
+            # vamos a --> OPCIONESCOMPRADOR - GraficoCompras - GrafProvTotales()
+            FacturarCompra.facturarCompra(db)
+            opcCom = -1
