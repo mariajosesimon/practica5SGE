@@ -17,8 +17,6 @@ def GraficaProductosStock(db):
         etiquetas.append(dato[1])
         valores.append(dato[0])
 
-
-
     plt.title("PRODUCTOS EN STOCK")
     plt.ylabel('STOCK DISPONIBLE')
     plt.xlabel('PRODUCTOS')

@@ -1,6 +1,6 @@
 
 
-def CrearProducto(db):
+def CrearProducto(db, tabla):
     nombreProducto = None
     precio = 0.0
 
@@ -19,9 +19,8 @@ def CrearProducto(db):
             print("El precio introducido no es válido.")
 
 
-
-    datos = (nombreProducto, precio)
-    insertarProd = "INSERT INTO productoscomprados( NombreProducto, Precio) VALUES (%s, %s )"
+    datos = ( nombreProducto, precio)
+    insertarProd = "INSERT INTO " + tabla + " ( NombreProducto, Precio) VALUES (%s, %s )"
     cursor = db.cursor()
     cursor.execute(insertarProd, datos)
     print("Se ha añadido el producto a la base de datos.")

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from COMPRAS import AddProveedor, AddProducto
-from Chequeos  import Seleccion
+from Chequeos import Seleccion
 
 
 def CrearPresupuestoCompra(db):

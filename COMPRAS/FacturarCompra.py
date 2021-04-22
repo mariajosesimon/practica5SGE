@@ -67,11 +67,11 @@ def facturarCompra(db):
         cursor.execute(insertarProducto, datos)
         db.commit()
         #---- MODIFICAR EL STOCK EN PRODUCTOSCOMPRADOS
-        stock = "select stock from productoscomprados where idProducto = %s"
+        stock = "select Stock from productoscomprados where idProducto = %s"
         cursor.execute(stock, prod[1])
         stockComprado = cursor.fetchone()
-        print(stockComprado[0])
-        print(prod[1])
+        #print(stockComprado[0])
+        #print(prod[1])
         totalActualizar = 0
 
         if stockComprado[0] == None:
@@ -79,7 +79,7 @@ def facturarCompra(db):
         else:
             totalActualizar = int(stockComprado[0]) + int(prod[2])
 
-        modificarStock = "UPDATE productoscomprados set stock = '" + str(totalActualizar) + "' where idProducto = '" + str(prod[1]) + "'"
+        modificarStock = "UPDATE productoscomprados set Stock = '" + str(totalActualizar) + "' where idProducto = '" + str(prod[1]) + "'"
         cursor.execute(modificarStock)
         db.commit()
 

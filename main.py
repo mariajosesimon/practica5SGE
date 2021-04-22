@@ -4,13 +4,14 @@ from LOGIN import Logon
 from RRHH import MenuRH
 from VENTAS import MenuVendedor
 from COMPRAS import MenuComprador
+from PRODUCCION import MenuProduccion
 
 #CREAMOS LA CONEXION
 db = pymysql.connect(host="127.0.0.1", user="root", db="mibd", port=3306)
 
 opc = -1
 
-while opc == -1 or opc < 3:
+while opc == -1 or opc < 4:
 
     MenuLogin()
 
@@ -35,8 +36,8 @@ while opc == -1 or opc < 3:
         elif resuelve == 3:  # ------------------Ventas--------------------
             MenuVendedor.RolVendedor(db)
 
-        #elif resuelve == 2:
-         #   MenuProductor.RolProductor()
+        elif resuelve == 4:
+            MenuProduccion.RolProductor(db)
         #elif resuelve == 4: # ------------------Producción--------------------
             #menuproducción.
         else:

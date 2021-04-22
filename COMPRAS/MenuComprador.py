@@ -31,7 +31,7 @@ def RolComprador(db):
         elif (opcCom - 1) == 1:
             # vamos a --> OPCIONESCOMPRADOR -- AddProducto - funcion CrearProducto()
 
-            AddProducto.CrearProducto(db)
+            AddProducto.CrearProducto(db, 'productoscomprados')
             opcCom = -1
     # ---------------------------opcion 3 -  Solicitud de presupuesto---------------------------
         elif (opcCom - 1) == 2:
