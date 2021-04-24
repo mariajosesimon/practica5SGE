@@ -45,13 +45,13 @@ def CrearOrdenProd(db, tabla):
 
 
         crearNuevoProducto = 0
-        productoElegido = -1
+        productoElegidoAProducir = -1
         while crearNuevoProducto != "SI" and crearNuevoProducto != "NO":
             print("El producto que quieres producir está en el listado mostrado?: si / no")
             crearNuevoProducto = input().upper()
             if crearNuevoProducto == "SI":
                 print("Elige un producto a producir: ")
-                productoElegido = Seleccion.seleccion2(-1, idProductos)
+                productoElegidoAProducir = Seleccion.seleccion2(-1, idProductos)
 
 
             elif crearNuevoProducto == "NO":
@@ -60,7 +60,7 @@ def CrearOrdenProd(db, tabla):
                 AddProducto.CrearProducto(db, tabla)
                 consultaUltimoProd='SELECT max(idProducto) FROM productoscreados'
                 cursor.execute(consultaUltimoProd)
-                productoElegido = cursor.fetchone()
+                productoElegidoAProducir = cursor.fetchone()
 
 
 
@@ -68,6 +68,7 @@ def CrearOrdenProd(db, tabla):
 
         addProductoOrden = {}
         listaProductos = []
+
         print("\nLISTADO DE PRODUCTOS. ELIGE UN PRODUCTO.\n")
         if len(materiales) > 0 :
             # Tener en cuenta que un presupuesto puede tener varios productos
@@ -117,8 +118,8 @@ def CrearOrdenProd(db, tabla):
 
 # -------------------------------cantidad a producir -------------------------------------------------------
 
-        cantidadProducida = 0
-        while cantidadProducida == None or cantidadProducida == "Dato no valido.":
+        cantidadProducida = None
+        while cantidadProducida == None or cantidadProducida == "Dato no valido." or cantidadProducida <1:
             try:
                 print("Cantidad a producir: ")
                 cantidadProducida = int(input())
@@ -133,17 +134,18 @@ def CrearOrdenProd(db, tabla):
 
 # -------------------------------CREAR LA ORDEN DE PRODUCCION -------------------------------------------------------
 
-
-        datosOrden = (productoElegido,fechaOrden,idUser, cantidadProducida)
+        fechaOrden = '2020-02-02'
+        datosOrden = (productoElegidoAProducir,fechaOrden,idUser[0], cantidadProducida)
         annadirOrden = "INSERT INTO ordenproduccion (idProductoFinal, FechaOrden, idProductor, cantidadProducida) VALUES (%s, %s, %s, %s)"
         cursor.execute(annadirOrden, datosOrden)
+        db.commit()
 
 #----------------- ACTUALIZAR LA TABLA  productoscreados  EL STOCK------------------------------
 
     # --- Revisar si hay stock para sumar ------
         #He refactorizado para reutilizar esta funcion
         tabla2 = "productoscreados"
-        ActualizarStock(cantidadProducida, cursor, productoElegido, tabla2 )
+        ActualizarStock(cantidadProducida, cursor, productoElegidoAProducir, tabla2 )
 
 
 
@@ -160,7 +162,7 @@ def CrearOrdenProd(db, tabla):
             annadirOrden = "INSERT INTO productosutilizadosproduccion (idOrden, idProductoUtilizado, Cantidad) VALUES (%s, %s, %s)"
             cursor.execute(annadirOrden, datos)
             tabla3 = 'productoscomprados'
-            ActualizarStock(cantidadProducida, cursor, productoElegido, tabla3 )
+            ActualizarStock(cantidadProducida, cursor, k, tabla3 )
             db.commit()
 
 
@@ -171,26 +173,31 @@ def CrearOrdenProd(db, tabla):
 def ActualizarStock(cantidadProducida, cursor, productoElegido, tabla4):
 
 
-    consultaStock = "select Stock from %s where idProducto = %s" # -----------------no devuelve nada mal la consulta.
-    datos = (tabla4, productoElegido)
-    cursor.execute(consultaStock, datos)
+    consultaStock = "select Stock from " + tabla4 + " where idProducto = '" + str(productoElegido) + "'" # -----------------no devuelve nada mal la consulta.
+
+
+    try:
+        cursor.execute(consultaStock)
+
+    except:
+        print("no se puede ejectuar la sentencia")
     cantidadStock = cursor.fetchone()
-    print(cantidadStock)
-    for cantidad in cantidadStock:
-        print(type(cantidad[0]))
+
+
 
     totalActualizar = 0
-    if cantidad[0] == None:
+    if cantidadStock[0] == 0:
         totalActualizar = cantidadProducida
     else:
-        if (tabla == 'productoscomprados'):
+        if (tabla4 == 'productoscomprados'):
             totalActualizar = int(cantidadStock[0]) - int(cantidadProducida)
-        elif (tabla == 'productoscreados'):
+        elif (tabla4 == 'productoscreados'):
             totalActualizar = int(cantidadStock[0]) + int(cantidadProducida)
 
     print(type(totalActualizar))
-    modificarStock = "UPDATE " + tabla + " set Stock = '" + str(totalActualizar) + "' where idProducto = '" + str(productoElegido) + "'"
+    modificarStock = "UPDATE " + tabla4 + " set Stock = '" + str(totalActualizar) + "' where idProducto = '" + str(productoElegido) + "'"
     cursor.execute(modificarStock)
+
 
 
 
