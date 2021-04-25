@@ -99,6 +99,7 @@ def CrearOrdenProd(db, tabla):
 
                 addProductoOrden[productoElegido] = cantidad
 
+
                 while seguir != "SI" and seguir != "NO":
                     print("Deseas continuar añadiendo productos: SI / NO")
                     seguir = input().upper()
@@ -162,7 +163,7 @@ def CrearOrdenProd(db, tabla):
             annadirOrden = "INSERT INTO productosutilizadosproduccion (idOrden, idProductoUtilizado, Cantidad) VALUES (%s, %s, %s)"
             cursor.execute(annadirOrden, datos)
             tabla3 = 'productoscomprados'
-            ActualizarStock(cantidadProducida, cursor, k, tabla3 )
+            ActualizarStock(v, cursor, k, tabla3 )
             db.commit()
 
 
@@ -173,7 +174,7 @@ def CrearOrdenProd(db, tabla):
 def ActualizarStock(cantidadProducida, cursor, productoElegido, tabla4):
 
 
-    consultaStock = "select Stock from " + tabla4 + " where idProducto = '" + str(productoElegido) + "'" # -----------------no devuelve nada mal la consulta.
+    consultaStock = "select Stock from " + tabla4 + " where idProducto = '" + str(productoElegido) + "'"
 
 
     try:
@@ -194,7 +195,7 @@ def ActualizarStock(cantidadProducida, cursor, productoElegido, tabla4):
         elif (tabla4 == 'productoscreados'):
             totalActualizar = int(cantidadStock[0]) + int(cantidadProducida)
 
-    print(type(totalActualizar))
+
     modificarStock = "UPDATE " + tabla4 + " set Stock = '" + str(totalActualizar) + "' where idProducto = '" + str(productoElegido) + "'"
     cursor.execute(modificarStock)
 
