@@ -52,4 +52,5 @@ while opc == -1 or opc < 4:
         opc = -1
     elif (opc -1) == 2:
         db.close()
+        break
 

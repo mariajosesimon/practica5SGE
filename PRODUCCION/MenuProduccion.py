@@ -1,4 +1,4 @@
-from PRODUCCION import OrdenProd
+from PRODUCCION import OrdenProd, ProduccionAnio
 
 def RolProductor(db):
 
@@ -23,9 +23,9 @@ def RolProductor(db):
 
             opcProd = -1
     # ---------------------------opcion 2 -  Listar productos utilizados para la produccion ---------------------------
-       # elif (opcProd - 1) == 1:
-            # vamos a --> OPCIONESPRODUCTOR -- GrafCantidadMPUtilizada - ListarMatPri()
-            #Terminamos en este menu el listado-el printeado - porque utilizo ListarMatPri  en el grafico.
+        elif (opcProd - 1) == 1:
+
+            ProduccionAnio.produccionAnual(db)
 
         #    opcProd = -1
     # ---------------------------opcion 3 -  Grafico productos utilizados para la produccion ---------------------------
