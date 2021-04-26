@@ -31,7 +31,7 @@ def CrearPresupuestoVenta(db):
 
     cursor.execute(consultaProductos)
     prodCreados = cursor.fetchall()
-
+    listaProductos=[]
     clienteElegido = None
     crearCliente = "k"
 
@@ -54,15 +54,15 @@ def CrearPresupuestoVenta(db):
                 if crearcliente == "SI":
                 # llamar a OPCIONESVENDEDOR - Addcliente - Crearcliente()
                     AddCliente.CrearCliente(db)
-#*****************************************************************************************************************
-#*****************ojo con este dato de cliente elegido = 1 o 0 lo sacaba del check id y ahora ya no lo tengo
-                #*****************************************************************************************************************
-                    clienteElegido = 1
+                    consultaUltimoCliente = "select idCliente from clientes"
+                    cursor.execute(consultaUltimoCliente)
+                    client = cursor.fetchone()
+                    clienteElegido = client[0]
+                    print("Cliente elegido : ", clienteElegido)
                 else:
                     clienteElegido = 0
 
     ##################################################################################
-    # tendremos que hacer lo mismo con el productos.
 
 
     # introduzco estas 3 variables antes de los if, para que no nos den error por no inicializarlas.
@@ -70,19 +70,20 @@ def CrearPresupuestoVenta(db):
         cantidad = None
         crearProducto = "k"
         if clienteElegido != 0:
-
             seguir = "SI"
-
 
             print("\nLISTADO DE PRODUCTOS. ELIGE UN PRODUCTO.\n")
             while seguir != "NO":
                 if seguir == "SI":
                     print("|{:^4}|{:^20}|{:^20}|{:^20}|".format("ID", "PRODUCTO", "PRECIO", "STOCK"))
+                    for prod in prodCreados:
+                        print("|{:^4}|{:^20}|{:^20}|{:^20}|".format(prod[0],prod[1],prod[2], prod[3]))
+                        listaProductos.append(prod[0])
 
-                productoElegido = Seleccion.seleccion(-1, prodCreados)
+                productoElegido = Seleccion.seleccion(-1, listaProductos)
 
                 try:
-                    print("Cantidad a comprar: ")
+                    print("Cantidad a vender: ")
                     cantidad = int(input())
                 except:
                     print("Dato no valido.")
@@ -113,6 +114,27 @@ def CrearPresupuestoVenta(db):
 
 #para insertar el presupuesto, tengo que insertar 1 el presupuesto, guardar el id que me ha generado,
         # y posteriormente, guardar los datos de productos + cantidad en la tabla de presventasproductos.
+
+        # el usuario con rol "Vendedor" que es el que está logado, será el comprador que solicita el presupuesto al proveedor.
+        cursor.execute("select idUsuario from userlogin")
+        idUser = cursor.fetchone()
+
+        datosPres=(clienteElegido,fechaPresupuesto,idUser[0])
+        insertarPresupuesto = "INSERT INTO presupuestosventas (idCliente, FechaPresupuesto, idVendedor) VALUES (%s, %s, %s)"
+        cursor.execute(insertarPresupuesto, datosPres)
+
+
+        #insertar en la tabla "presupuestoscomprasproductos" cada producto.
+        consultaUltimoPres = "select idPresupuesto from presupuestosventas where idCliente = %s and FechaPresupuesto = %s and idVendedor =%s"
+        cursor.execute(consultaUltimoPres, datosPres)
+        presupuesto = cursor.fetchone()
+
+        for k, v in addProductoPresupuestoVenta.items():
+            datosPres=(presupuesto[0], k, v)
+            insertarPresProd = "INSERT INTO presupuestosventasproductos (idPresupuesto, idProducto, Cantidad) VALUES (%s, %s, %s)"
+            cursor.execute(insertarPresProd, datosPres)
+        db.commit()
+
 
         print("Se ha creado el presupuesto.")
     else:

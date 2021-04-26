@@ -9,11 +9,12 @@ Y modificar el dato seleccionado.
 
 '''
 from Chequeos import Seleccion
-from LISTADOS import ListarPresupuestos, SeleccionPresCompra
+from LISTADOS import ListarPresupuestos, SeleccionPresupuesto
 
 
 def updatePres(db):
     cursor1 = db.cursor()
+
     consultaPres = "select distinct presupuestoscompras.idPresupuesto, proveedores.idProveedor, presupuestoscompras.FechaPresupuesto,usuarios.NombreUSR from presupuestoscompras,usuarios,presupuestoscomprasproductos, proveedores	where presupuestoscompras.idProveedor = proveedores.idProveedor and	presupuestoscompras.idComprador = usuarios.idUsuario order by presupuestoscompras.idPresupuesto"
     cursor1.execute(consultaPres)
     presupuestos = cursor1.fetchall()
@@ -21,7 +22,7 @@ def updatePres(db):
     print("---------------LISTA DE PRESUPUESTOS---------------------")
     ListarPresupuestos.listarPresupuestos(db, "compras")
 
-    presupuestoElegido = SeleccionPresCompra.SeleccionPresupuestoCompra(db)
+    presupuestoElegido = SeleccionPresupuesto.SeleccionPresupuestoID(db, consultaPres)
 
     seguir = 0
    #DAto que desean modificar.

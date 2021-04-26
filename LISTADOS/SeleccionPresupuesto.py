@@ -1,11 +1,10 @@
 from Chequeos import Seleccion
 
 
-def SeleccionPresupuestoCompra(db):
+def SeleccionPresupuestoID(db, consulta):
     # Guardamos los ids de los presupuestos para que puedan elegir.
     cursor1 = db.cursor()
-    consultaPres = "select distinct presupuestoscompras.idPresupuesto, proveedores.idProveedor, presupuestoscompras.FechaPresupuesto,usuarios.NombreUSR from presupuestoscompras,usuarios,presupuestoscomprasproductos, proveedores	where presupuestoscompras.idProveedor = proveedores.idProveedor and	presupuestoscompras.idComprador = usuarios.idUsuario order by presupuestoscompras.idPresupuesto"
-    cursor1.execute(consultaPres)
+    cursor1.execute(consulta)
     presupuestos = cursor1.fetchall()
     listapresupuestos = []
     # Elección del presupuesto.

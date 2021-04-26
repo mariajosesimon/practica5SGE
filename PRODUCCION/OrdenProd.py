@@ -109,13 +109,13 @@ def CrearOrdenProd(db, tabla):
         fechaOrden = ""
 
         print("Fecha de la orden (yyyy-mm-dd): ")
-        # while True:
-        #     try:
-        #         fechaOrden = input()
-        #         datetime.strptime(fechaOrden, '%Y-%m-%d')
-        #         break
-        #     except:
-        #         print("No ha introducido una fecha correcta. Vuelva a intentarlo: ")
+        while True:
+             try:
+                 fechaOrden = input()
+                 datetime.strptime(fechaOrden, '%Y-%m-%d')
+                 break
+             except:
+                 print("No ha introducido una fecha correcta. Vuelva a intentarlo: ")
 
 # -------------------------------cantidad a producir -------------------------------------------------------
 
@@ -135,7 +135,7 @@ def CrearOrdenProd(db, tabla):
 
 # -------------------------------CREAR LA ORDEN DE PRODUCCION -------------------------------------------------------
 
-        fechaOrden = '2020-02-02'
+
         datosOrden = (productoElegidoAProducir,fechaOrden,idUser[0], cantidadProducida)
         annadirOrden = "INSERT INTO ordenproduccion (idProductoFinal, FechaOrden, idProductor, cantidadProducida) VALUES (%s, %s, %s, %s)"
         cursor.execute(annadirOrden, datosOrden)
@@ -185,9 +185,8 @@ def ActualizarStock(cantidadProducida, cursor, productoElegido, tabla4):
     cantidadStock = cursor.fetchone()
 
 
-
     totalActualizar = 0
-    if cantidadStock[0] == 0:
+    if int(cantidadStock[0]) == 0:
         totalActualizar = cantidadProducida
     else:
         if (tabla4 == 'productoscomprados'):
