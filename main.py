@@ -1,6 +1,6 @@
 import pymysql
 from MenuLogin import MenuLogin
-from LOGIN import Logon
+from LOGIN import Logon, CambiarPass
 from RRHH import MenuRH
 from VENTAS import MenuVendedor
 from COMPRAS import MenuComprador
@@ -48,7 +48,7 @@ while opc == -1 or opc < 4:
     elif (opc - 1) == 1:
         # vamos a --> LOGIN.RegistroUSR.registro()
         #  print(RegistroUSR.registro())
-
+        CambiarPass.cambio(db)
         opc = -1
     elif (opc -1) == 2:
         db.close()

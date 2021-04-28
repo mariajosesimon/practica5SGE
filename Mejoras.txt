@@ -1,2 +1,3 @@
 - Encriptar contraseñas
 - dar formato con pantallas. 
+- poner todas las tablas "if exists..." para que se creen,
