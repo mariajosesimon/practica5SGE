@@ -1,10 +1,11 @@
 import pymysql
-
+import hashlib
 def logarse(db):
     print("USUARIO: ")
     usr = input()
     print("CONTRASEÑA: ")
     password = input()
+
 
     # aqui tengo que revisar:
     # - si el usuario y si la contraseña son correctas accederá al menu correspondiente y además está en activo
@@ -18,6 +19,7 @@ def logarse(db):
     cursor.execute(usrExiste)
     usuarioExiste = cursor.fetchone()
 
+
     if usuarioExiste == None:
         return (print("El usuario no existe. \nContacte con RH para dar de alta."))
     else:
@@ -30,7 +32,9 @@ def logarse(db):
             return (print("El usuario no está activo. \nContacte con RH para activar."))
         else:
             # Existe el usuario y contraseña + usuario está activo nos devuelve todos los datos del usuario.
+
             consultaUSR = 'SELECT * FROM usuarios WHERE usuario = "' + usr + '" and password = "' + password + '" '
+
             cursor.execute(consultaUSR)
             resultado = cursor.fetchall()
 

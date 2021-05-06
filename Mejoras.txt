@@ -1,3 +1,10 @@
 - Encriptar contraseñas
-- dar formato con pantallas. 
+
+import hashlib
+
+pwd = 'q1w2e3r4t5'
+clave = pwd.encode('utf-8')
+
+
+
 - poner todas las tablas "if exists..." para que se creen,
