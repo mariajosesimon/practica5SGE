@@ -1,5 +1,5 @@
 '''Para facturar hay que elegir un presupuesto.
-eliminar el presupuesto de presupuestos -> desencadena que en la tbla presupuestocomprasproductos desaparezca el presupuesto
+eliminar el presupuesto de presupuestos -> desencadena que en la tbla presupuestoventasproductos desaparezca el presupuesto
 así que hay que copiar esos datos a otra tabla.
 añadir el stock a productoscomprados.
 '''
@@ -10,23 +10,28 @@ from LISTADOS import ListarPresupuestos
 from LISTADOS.SeleccionPresupuesto import SeleccionPresupuestoID
 
 
-def facturarCompra(db):
+def facturarVenta(db):
     fechaFactura = ""
     cursor = db.cursor()
-
-    consulta = "select count(*) from presupuestoscompras"
+    crearTablaFacturasVentas = "CREATE TABLE IF NOT EXISTS facturasventas (  idFactura int(11) NOT NULL AUTO_INCREMENT,  nFactura int(11) NOT NULL,  idCliente int(11) NOT NULL,  FechaFactura date NOT NULL,  idVendedor int(11) NOT NULL,  PRIMARY KEY (idFactura))"
+    cursor.execute(crearTablaFacturasVentas)
+    db.commit()
+    crearTablaFacturasVentasProductos ="CREATE TABLE IF NOT EXISTS facturaventasproductos (  idFactura int(11) NOT NULL,  idProducto int(11) NOT NULL,  Cantidad int(11) NOT NULL,  idConcepto int(11) NOT NULL AUTO_INCREMENT,  PRIMARY KEY (idConcepto),  FOREIGN KEY (idFactura) REFERENCES facturasventas (idFactura) ON DELETE CASCADE ON UPDATE CASCADE,  FOREIGN KEY (idProducto) REFERENCES productoscreados (idProducto) ON DELETE CASCADE ON UPDATE CASCADE)"
+    cursor.execute(crearTablaFacturasVentasProductos)
+    db.commit()
+    consulta = "select count(*) from presupuestosventas"
     cursor.execute(consulta)
     hayDatos = cursor.fetchone()
-    consultaPres = "select distinct presupuestoscompras.idPresupuesto, proveedores.idProveedor, presupuestoscompras.FechaPresupuesto,usuarios.NombreUSR from presupuestoscompras,usuarios,presupuestoscomprasproductos, proveedores	where presupuestoscompras.idProveedor = proveedores.idProveedor and	presupuestoscompras.idComprador = usuarios.idUsuario order by presupuestoscompras.idPresupuesto"
+    consultaPres = "select distinct presupuestosventas.idPresupuesto, clientes.idCliente, presupuestosventas.FechaPresupuesto,usuarios.NombreUSR from presupuestosventas,usuarios,presupuestosventasproductos, clientes where presupuestosventas.idCliente = clientes.idCliente and presupuestosventas.idVendedor= usuarios.idUsuario order by presupuestosventas.idPresupuesto"
 
 
     if (hayDatos[0] > 0):
         # Mostar todos los presupuestos.
         print("---------------LISTA DE PRESUPUESTOS---------------------")
-        ListarPresupuestos.listarPresupuestos(db, "compras")
+        ListarPresupuestos.listarPresupuestos(db, 'ventas')
         presupuestoElegido = SeleccionPresupuestoID(db, consultaPres)
 
-        #------DATOS PARA LA FACTURA -----------FACTURASCOMPRAS-----------
+        #------DATOS PARA LA FACTURA -----------FACTURASVENTAS-----------
         # Fecha factura
         print("Fecha de la factura (yyyy-mm-dd): ")
 
@@ -39,22 +44,22 @@ def facturarCompra(db):
                 print("No ha introducido una fecha correcta. Vuelva a intentarlo: ")
 
 
-        consultaPresupuesto = "Select * from presupuestoscompras where idPresupuesto = %s"
+        consultaPresupuesto = "Select * from presupuestosventas where idPresupuesto = %s"
         cursor.execute(consultaPresupuesto, presupuestoElegido)
         presupuesto = cursor.fetchone()
       #  print(presupuesto[0]) idPresupuesto / idProveedor / FechaPresupuesto / idComprador
 
         nfactura = int(str(presupuesto[0]) + str(presupuesto[2]).replace('-', ''))
 
-        insertarFactura = "insert into facturascompras (nFactura, idProveedor, FechaFactura, idComprador) values (%s, %s, %s,%s) "
+        insertarFactura = "insert into facturasventas (nFactura, idCliente, FechaFactura, idVendedor) values (%s, %s, %s,%s) "
         datosFactura = (nfactura, presupuesto[1], fechaFactura, presupuesto[3])
         cursor.execute(insertarFactura, datosFactura)
         db.commit()
 
 
-         #------DATOS PARA FACTURACOMPRASCOMPRASPRDOCTOS--- e inserccion--------
+         #------DATOS PARA FACTURAVENTASVENTASPRDOCTOS--- e inserccion--------
 
-        consultaProductosPres = "select * from presupuestoscomprasproductos where idPresupuesto = %s"
+        consultaProductosPres = "select * from presupuestosventasproductos where idPresupuesto = %s"
         cursor.execute(consultaProductosPres, presupuestoElegido )
         productos = cursor.fetchall()
         db.commit()
@@ -63,7 +68,7 @@ def facturarCompra(db):
     #*******************AQUI ME DA ERROR, NO ENCUENTRA EL IDFACTURA *****************************************************
     #********************************************************************************************************************
 
-        ultimafactura = "select idFactura from facturascompras where nFactura = %s"
+        ultimafactura = "select idFactura from facturasventas where nFactura = %s"
         cursor.execute(ultimafactura, str(nfactura))
         lastFactura = cursor.fetchone()
 
@@ -71,11 +76,11 @@ def facturarCompra(db):
 
         for prod in productos:
             datos = (lastFactura[0], int(prod[1]), int(prod[2]))
-            insertarProducto = "insert into facturacomprasproductos (idFactura, idProducto, Cantidad) VALUES (%s, %s, %s)"
+            insertarProducto = "insert into facturaventasproductos (idFactura, idProducto, Cantidad) VALUES (%s, %s, %s)"
             cursor.execute(insertarProducto, datos)
             db.commit()
             #---- MODIFICAR EL STOCK EN PRODUCTOSCOMPRADOS
-            stock = "select Stock from productoscomprados where idProducto = %s"
+            stock = "select Stock from productoscreados where idProducto = %s"
             cursor.execute(stock, prod[1])
             stockComprado = cursor.fetchone()
             #print(stockComprado[0])
@@ -87,13 +92,13 @@ def facturarCompra(db):
             else:
                 totalActualizar = int(stockComprado[0]) + int(prod[2])
 
-            modificarStock = "UPDATE productoscomprados set Stock = '" + str(totalActualizar) + "' where idProducto = '" + str(prod[1]) + "'"
+            modificarStock = "UPDATE productoscreados set Stock = '" + str(totalActualizar) + "' where idProducto = '" + str(prod[1]) + "'"
             cursor.execute(modificarStock)
             db.commit()
 
 
 
-        consultaEliminar = "delete from presupuestoscompras where idPresupuesto = %s"
+        consultaEliminar = "delete from presupuestosventas where idPresupuesto = %s"
         cursor = db.cursor()
         cursor.execute(consultaEliminar, presupuestoElegido)
         db.commit()

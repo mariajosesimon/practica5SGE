@@ -144,9 +144,6 @@ def CrearPresupuestoCompra(db):
             insertarPresupuesto = "INSERT INTO presupuestoscompras (idProveedor, FechaPresupuesto, idComprador) VALUES (%s, %s, %s)"
             cursor.execute(insertarPresupuesto, datosPres)
 
-        ##############################################################################################################
-        #ESTAMOS SUPONIENDO QUE NO SE PUEDE REPETIR ESTOS 3 DATOS EN EL MISMO DIA - IDPROVEEDOR, FECHA E IDCOMPRADOR
-        ##############################################################################################################
 
 
         #insertar en la tabla "presupuestoscomprasproductos" cada producto.

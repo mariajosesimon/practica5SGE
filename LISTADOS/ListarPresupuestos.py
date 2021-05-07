@@ -23,6 +23,8 @@ def listarPresupuestos(db, entidad):
     elif entidad == "ventas":
         proveedor = "CLIENTE"
         comprador = "AGENTE VENDEDOR"
+        consultaPres = "select distinct presupuestosventas.idPresupuesto, clientes.Nombre, presupuestosventas.FechaPresupuesto,usuarios.NombreUSR from presupuestosventas,usuarios,presupuestosventasproductos, clientes	where presupuestosventas.idCliente = clientes.idCliente and	presupuestosventas.idVendedor = usuarios.idUsuario order by presupuestosventas.idPresupuesto"
+        consultaProd = "select presupuestosventasproductos.idPresupuesto, productoscreados.NombreProducto, presupuestosventasproductos.cantidad, productoscreados.Precio from presupuestosventasproductos, productoscreados where presupuestosventasproductos.idProducto = productoscreados.idProducto"
 
 
     cursor1 = db.cursor()

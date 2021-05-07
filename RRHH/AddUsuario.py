@@ -10,7 +10,7 @@ FUNCIONES REUTILIZADAS DE OTROS EJERCICIOS:
 CONSULTAS A LA BASE DE DATOS:
 - Hacemos una select para saber los departamentos disponibles.
 '''
-
+import hashlib
 
 from datetime import datetime
 import pymysql
@@ -82,6 +82,10 @@ def CrearUsuario(db):
     while contrasena == None or contrasena == "":
         print("Contraseña: ")
         contrasena = input().title()
+
+    #codificar pass
+   # passw = hashlib.sha256(contrasena.encode())
+    
 
     datos = (nombre, apellidos, nif, fechaAlta, activo, departamentoID, usuario, contrasena, email)
     insertarUSR = "INSERT INTO usuarios( NombreUSR, ApellidosUSR, NIF, FechaAlta, Activo, idDepartamento, usuario, password, email) VALUES (%s, %s, %s , %s, %s, %s, %s, %s, %s)"

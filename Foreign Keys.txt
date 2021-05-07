@@ -1,20 +1,63 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------FOREIGN KEYS OK------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
 TABLA USUARIOS
 
-alter table mibd.usuarios
-add constraint FK_dep_id 
-foreign key (idDepartamento) references mibd.departamentos(idDepartamento)
-on update cascade;
+alter table mibd.usuarios add constraint FK_dep_id foreign key (idDepartamento) references mibd.departamentos(idDepartamento) on update cascade on delete cascade; -->ok
 
-------------------------------------------
+--------------------------------------------------------------------------------
+
+TABLA PRESUPUESTOSCOMPRAS
+
+alter table presupuestoscompras add constraint FK_pco_idU foreign key (idComprador) references usuarios(idUsuario) on update cascade on delete cascade --> ok
+alter table presupuestoscompras add constraint FK_pco_pro foreign key (idProveedor) references proveedores(idProveedor) on update cascade on delete cascade -->ok
+
+--------------------------------------------------------------------------------
+
 TABLA PRESUPUESTOSCOMPRASPRODUCTOS
-alter table presupuestoscomprasproductos
-add constraint FK_idp_pre foreign key (idPresupuesto) references presupuestoscompras (idPresupuesto) on update cascade on delete cascade;
 
+alter table presupuestoscomprasproductos add constraint FK_idp_pre foreign key (idPresupuesto) references presupuestoscompras (idPresupuesto) on update cascade on delete cascade;-->ok
+alter table presupuestoscomprasproductos add constraint FK_idp_prd foreign key (idProducto) references productoscomprados(idProducto) on update cascade on delete cascade;-->ok
 
 --------------------------------------------------------------------------------
 
 TABLA FACTURACOMPRASPRODUCTOS
-alter table facturacomprasproductos
-add constraint FK_idf_fac foreign key (idFactura) references facturascompras (idFactura) on update cascade on delete cascade;
 
+alter table facturacomprasproductos add constraint FK_idf_fac foreign key (idFactura) references facturascompras (idFactura) on update cascade on delete cascade; --> ok
+alter table facturacomprasproductos add constraint FK_idp_pro foreign key (idProducto) references productoscomprados(idProducto) on update cascade on delete cascade; --> ok
+
+--------------------------------------------------------------------------------
+
+TABLA FACTURASCOMPRAS
+
+alter table mibd.facturascompras add constraint FK_fco_id foreign key (idComprador) references usuarios(idUsuario) on update cascade on delete cascade --> ok
+alter table mibd.facturascompras add constraint FK_fco_pro foreign key (idProveedor) references proveedores(idProveedor) on update cascade on delete cascade -->ok
+--------------------------------------------------------------------------------
+
+TABLA ORDENPRODUCCION
+
+alter table mibd.ordenproduccion add constraint FK_opr_id foreign key (idProductor) references usuarios(idUsuario)on update cascade on delete cascade;-->ok
+alter table mibd.ordenproduccion add constraint FK_pfi_idp foreign key (idProductoFinal)references productoscreados(idProducto)on update cascade on delete cascade;-->ok
+
+---------------------------------------------------------------------------------
+
+TABLA PRODUCTOSUTILIZADOSPRODUCCION
+
+alter table productosutilizadosproduccion add constraint FK_pup_idO foreign key (idOrden) references ordenproduccion(idOrden)on update cascade on delete cascade --> ok
+alter table productosutilizadosproduccion add constraint FK_pup_iPU foreign key (idProductoUtilizado) references productoscomprados(idProducto) on update cascade on delete cascade -->ok
+--------------------------------------------------------------------------------
+
+TABLA PRESUPUESTOSVENTASPRODUCTOS
+
+alter table presupuestosventasproductos add constraint FK_pvp_pre foreign key (idPresupuesto) references presupuestosventas (idPresupuesto) on update cascade on delete cascade;-->ok
+alter table presupuestosventasproductos add constraint FK_pvp_prd foreign key (idProducto) references productoscreados(idProducto) on update cascade on delete cascade;-->ok
+
+--------------------------------------------------------------------------------
+
+
+TABLA PRESUPUESTOSVENTAS
+
+alter table presupuestosventas add constraint FK_pve_idU foreign key (idVendedor) references usuarios(idUsuario) on update cascade on delete cascade --> ok
+alter table presupuestosventas add constraint FK_pve_pro foreign key (idCliente) references clientes(idCliente) on update cascade on delete cascade -->ok
 --------------------------------------------------------------------------------
