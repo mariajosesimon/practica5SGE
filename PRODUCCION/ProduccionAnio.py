@@ -79,16 +79,8 @@ def produccionAnual(db):
         diccionario[p]= milista2
         milista.clear()
 
-    print(diccionario)
+  #  print(diccionario)
 
-    #Etiquetas:
-
-
-
-
-     # creamos el array con los nombres
-    #Valores
-    #valores = diccionario.values()
 
     # Creamos las barras: primero los nombres, luego los datos y añadimos color (rgb + opacidad)
     etiquetas=[]
@@ -103,19 +95,26 @@ def produccionAnual(db):
 
     colores=['yellow', 'blue', 'red', 'green', 'pink', 'black']
     pintar=[]
+    leyenda={}
+
     while i < len(anios):
         pintar.append(colores[i])
+        leyenda[anios[i]]=colores[i]
         i=i+1
 
     print(etiquetas)
     print(valores)
+
+    width= 0.20
+
     pos_y=np.arange(len(etiquetas))
-    plt.bar(pos_y, valores,  color=pintar)
+    plt.bar(pos_y, valores, color=pintar, width=width, label=anios)
 
 
         # Añadimos título y nombre a los ejes
     plt.title('PRODUCTOS CREADOS')
     plt.ylabel('CANTIDAD CREADA')
+
 
 
         # Añadimos los nombres
