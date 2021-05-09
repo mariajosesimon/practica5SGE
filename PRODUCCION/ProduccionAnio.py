@@ -94,12 +94,21 @@ def produccionAnual(db):
         i=0
 
     colores=['yellow', 'blue', 'red', 'green', 'pink', 'black']
+    yellow_proxy = plt.Rectangle((0, 0), 1, 1, color="yellow")
+    blue_proxy = plt.Rectangle((0, 0), 1, 1, color="blue")
+    red_proxy = plt.Rectangle((0, 0), 1, 1, color="red")
+    green_proxy = plt.Rectangle((0, 0), 1, 1, color="green")
+    pink_proxy = plt.Rectangle((0, 0), 1, 1, color="pink")
+    black_proxy = plt.Rectangle((0, 0), 1, 1, color="black")
+    proxyColores=[yellow_proxy,blue_proxy,red_proxy,green_proxy,pink_proxy,black_proxy]
+
+
     pintar=[]
-    leyenda={}
+    leyenda=[]
 
     while i < len(anios):
         pintar.append(colores[i])
-        leyenda[anios[i]]=colores[i]
+        leyenda.append(proxyColores[i])
         i=i+1
 
     print(etiquetas)
@@ -108,18 +117,16 @@ def produccionAnual(db):
     width= 0.20
 
     pos_y=np.arange(len(etiquetas))
-    plt.bar(pos_y, valores, color=pintar, width=width, label=anios)
+    plt.bar(pos_y, valores, color=pintar, width=width)
 
 
         # Añadimos título y nombre a los ejes
     plt.title('PRODUCTOS CREADOS')
     plt.ylabel('CANTIDAD CREADA')
 
-
-
         # Añadimos los nombres
     plt.xticks(pos_y, etiquetas)
-    plt.legend()
+    plt.legend(leyenda, anios)
 
         # Mostramos gráfica
     plt.show()
