@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-04-2021 a las 19:38:43
+-- Tiempo de generación: 13-05-2021 a las 21:22:35
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.3
 
@@ -32,8 +32,9 @@ CREATE TABLE `clientes` (
   `Nombre` varchar(255) NOT NULL,
   `Apellidos` varchar(255) NOT NULL,
   `Ciudad` varchar(50) NOT NULL,
-  `Email` varchar(50) NOT NULL,
-  `NIF` varchar(10) NOT NULL
+  `Telefono` int(11) DEFAULT NULL,
+  `NIF` varchar(10) NOT NULL,
+  `Email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -50,13 +51,28 @@ CREATE TABLE `departamentos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `facturacomprasproductos`
+--
+
+CREATE TABLE `facturacomprasproductos` (
+  `idFactura` int(11) NOT NULL,
+  `idProducto` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL,
+  `idConcepto` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `facturascompras`
 --
 
 CREATE TABLE `facturascompras` (
-  `idFacturaCompra` int(11) NOT NULL,
-  `idPresupuestoCompra` int(11) NOT NULL,
-  `FechaCompra` date NOT NULL
+  `idFactura` int(11) NOT NULL,
+  `nFactura` int(11) NOT NULL,
+  `idProveedor` int(11) NOT NULL,
+  `FechaFactura` date NOT NULL,
+  `idComprador` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -66,9 +82,24 @@ CREATE TABLE `facturascompras` (
 --
 
 CREATE TABLE `facturasventas` (
-  `idFacturaVenta` int(11) NOT NULL,
-  `idPresupuestoVenta` int(11) NOT NULL,
-  `FechaCompra` date NOT NULL
+  `idFactura` int(11) NOT NULL,
+  `nFactura` int(11) NOT NULL,
+  `idCliente` int(11) NOT NULL,
+  `FechaFactura` date NOT NULL,
+  `idVendedor` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `facturaventasproductos`
+--
+
+CREATE TABLE `facturaventasproductos` (
+  `idFactura` int(11) NOT NULL,
+  `idProducto` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL,
+  `idConcepto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -82,9 +113,7 @@ CREATE TABLE `ordenproduccion` (
   `idProductoFinal` int(11) NOT NULL,
   `FechaOrden` date NOT NULL,
   `idProductor` int(11) NOT NULL,
-  `cantidadProducida` int(11) NOT NULL,
-  `idProducto` int(11) NOT NULL,
-  `Cantidad` int(11) NOT NULL
+  `cantidadProducida` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -97,9 +126,20 @@ CREATE TABLE `presupuestoscompras` (
   `idPresupuesto` int(11) NOT NULL,
   `idProveedor` int(11) NOT NULL,
   `FechaPresupuesto` date NOT NULL,
-  `idComprador` int(11) NOT NULL,
+  `idComprador` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `presupuestoscomprasproductos`
+--
+
+CREATE TABLE `presupuestoscomprasproductos` (
+  `idPresupuesto` int(11) NOT NULL,
   `idProducto` int(11) NOT NULL,
-  `Cantidad` int(11) NOT NULL
+  `Cantidad` int(11) NOT NULL,
+  `idConcepto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -112,9 +152,20 @@ CREATE TABLE `presupuestosventas` (
   `idPresupuesto` int(11) NOT NULL,
   `idCliente` int(11) NOT NULL,
   `FechaPresupuesto` date NOT NULL,
-  `idVendedor` int(11) NOT NULL,
+  `idVendedor` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `presupuestosventasproductos`
+--
+
+CREATE TABLE `presupuestosventasproductos` (
+  `idPresupuesto` int(11) NOT NULL,
   `idProducto` int(11) NOT NULL,
-  `Cantidad` int(11) NOT NULL
+  `Cantidad` int(11) NOT NULL,
+  `idPVP` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -127,7 +178,7 @@ CREATE TABLE `productoscomprados` (
   `idProducto` int(11) NOT NULL,
   `NombreProducto` varchar(100) NOT NULL,
   `Precio` double NOT NULL,
-  `Stock` int(11) NOT NULL
+  `Stock` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -140,7 +191,20 @@ CREATE TABLE `productoscreados` (
   `idProducto` int(11) NOT NULL,
   `NombreProducto` varchar(100) NOT NULL,
   `Precio` double NOT NULL,
-  `Stock` int(11) NOT NULL
+  `Stock` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productosutilizadosproduccion`
+--
+
+CREATE TABLE `productosutilizadosproduccion` (
+  `idProductosUtilizadosOrden` int(11) NOT NULL,
+  `idOrden` int(11) NOT NULL,
+  `idProductoUtilizado` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -152,10 +216,30 @@ CREATE TABLE `productoscreados` (
 CREATE TABLE `proveedores` (
   `idProveedor` int(11) NOT NULL,
   `Nombre` varchar(255) NOT NULL,
-  `Apellidos` varchar(255) NOT NULL,
   `Ciudad` varchar(50) NOT NULL,
-  `Email` varchar(50) NOT NULL,
-  `CIF` varchar(10) NOT NULL
+  `Telefono` int(11) NOT NULL,
+  `CIF` varchar(10) NOT NULL,
+  `Email` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `userlogin`
+--
+
+CREATE TABLE `userlogin` (
+  `idUsuario` int(11) NOT NULL DEFAULT 0,
+  `NombreUSR` varchar(50) NOT NULL,
+  `ApellidosUSR` varchar(100) NOT NULL,
+  `NIF` varchar(10) NOT NULL,
+  `FechaAlta` date NOT NULL,
+  `FechaBaja` date DEFAULT NULL,
+  `Activo` int(1) NOT NULL,
+  `idDepartamento` int(11) NOT NULL,
+  `usuario` varchar(25) NOT NULL,
+  `password` varchar(25) NOT NULL,
+  `email` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -195,45 +279,76 @@ ALTER TABLE `departamentos`
   ADD PRIMARY KEY (`idDepartamento`);
 
 --
+-- Indices de la tabla `facturacomprasproductos`
+--
+ALTER TABLE `facturacomprasproductos`
+  ADD PRIMARY KEY (`idConcepto`),
+  ADD KEY `FK_idf_fac` (`idFactura`),
+  ADD KEY `FK_idp_pro` (`idProducto`);
+
+--
 -- Indices de la tabla `facturascompras`
 --
 ALTER TABLE `facturascompras`
-  ADD PRIMARY KEY (`idFacturaCompra`),
-  ADD KEY `FK_pCo_id` (`idPresupuestoCompra`);
+  ADD PRIMARY KEY (`idFactura`),
+  ADD KEY `FK_fco_id` (`idComprador`),
+  ADD KEY `FK_fco_pro` (`idProveedor`);
 
 --
 -- Indices de la tabla `facturasventas`
 --
 ALTER TABLE `facturasventas`
-  ADD PRIMARY KEY (`idFacturaVenta`),
-  ADD KEY `FK_pVe_id` (`idPresupuestoVenta`);
+  ADD PRIMARY KEY (`idFactura`),
+  ADD KEY `FK_fve_id` (`idVendedor`),
+  ADD KEY `FK_fve_pro` (`idCliente`);
+
+--
+-- Indices de la tabla `facturaventasproductos`
+--
+ALTER TABLE `facturaventasproductos`
+  ADD PRIMARY KEY (`idConcepto`),
+  ADD KEY `FK_idv_fac` (`idFactura`),
+  ADD KEY `FK_idv_pro` (`idProducto`);
 
 --
 -- Indices de la tabla `ordenproduccion`
 --
 ALTER TABLE `ordenproduccion`
   ADD PRIMARY KEY (`idOrden`),
-  ADD KEY `FK_idProd` (`idProducto`),
-  ADD KEY `FK_usu_id` (`idProductor`),
-  ADD KEY `FK_pfi_id` (`idProductoFinal`);
+  ADD KEY `FK_opr_id` (`idProductor`),
+  ADD KEY `FK_pfi_idp` (`idProductoFinal`);
 
 --
 -- Indices de la tabla `presupuestoscompras`
 --
 ALTER TABLE `presupuestoscompras`
   ADD PRIMARY KEY (`idPresupuesto`) USING BTREE,
-  ADD KEY `FK_prod_id` (`idProducto`),
-  ADD KEY `FK_prov_id` (`idProveedor`),
-  ADD KEY `FK_user_id` (`idComprador`);
+  ADD KEY `FK_pco_idU` (`idComprador`),
+  ADD KEY `FK_pco_pro` (`idProveedor`);
+
+--
+-- Indices de la tabla `presupuestoscomprasproductos`
+--
+ALTER TABLE `presupuestoscomprasproductos`
+  ADD PRIMARY KEY (`idConcepto`),
+  ADD KEY `FK_idp_pre` (`idPresupuesto`),
+  ADD KEY `FK_idp_prd` (`idProducto`);
 
 --
 -- Indices de la tabla `presupuestosventas`
 --
 ALTER TABLE `presupuestosventas`
-  ADD PRIMARY KEY (`idPresupuesto`) USING BTREE,
-  ADD KEY `FK_cli_id` (`idCliente`),
-  ADD KEY `FK_usr_id` (`idVendedor`),
-  ADD KEY `FK_pro_id` (`idProducto`);
+  ADD PRIMARY KEY (`idPresupuesto`),
+  ADD KEY `FK_pve_idU` (`idVendedor`),
+  ADD KEY `FK_pve_pro` (`idCliente`);
+
+--
+-- Indices de la tabla `presupuestosventasproductos`
+--
+ALTER TABLE `presupuestosventasproductos`
+  ADD PRIMARY KEY (`idPVP`),
+  ADD KEY `FK_pvp_prd` (`idProducto`),
+  ADD KEY `FK_pvp_pre` (`idPresupuesto`);
 
 --
 -- Indices de la tabla `productoscomprados`
@@ -248,6 +363,14 @@ ALTER TABLE `productoscreados`
   ADD PRIMARY KEY (`idProducto`);
 
 --
+-- Indices de la tabla `productosutilizadosproduccion`
+--
+ALTER TABLE `productosutilizadosproduccion`
+  ADD PRIMARY KEY (`idProductosUtilizadosOrden`),
+  ADD KEY `FK_pup_idO` (`idOrden`),
+  ADD KEY `FK_pup_iPU` (`idProductoUtilizado`);
+
+--
 -- Indices de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
@@ -258,7 +381,6 @@ ALTER TABLE `proveedores`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`idUsuario`),
-  ADD UNIQUE KEY `usuario` (`usuario`),
   ADD KEY `FK_dep_id` (`idDepartamento`);
 
 --
@@ -278,22 +400,58 @@ ALTER TABLE `departamentos`
   MODIFY `idDepartamento` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `facturacomprasproductos`
+--
+ALTER TABLE `facturacomprasproductos`
+  MODIFY `idConcepto` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `facturascompras`
 --
 ALTER TABLE `facturascompras`
-  MODIFY `idFacturaCompra` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idFactura` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `facturasventas`
 --
 ALTER TABLE `facturasventas`
-  MODIFY `idFacturaVenta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idFactura` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `facturaventasproductos`
+--
+ALTER TABLE `facturaventasproductos`
+  MODIFY `idConcepto` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ordenproduccion`
 --
 ALTER TABLE `ordenproduccion`
   MODIFY `idOrden` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `presupuestoscompras`
+--
+ALTER TABLE `presupuestoscompras`
+  MODIFY `idPresupuesto` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `presupuestoscomprasproductos`
+--
+ALTER TABLE `presupuestoscomprasproductos`
+  MODIFY `idConcepto` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `presupuestosventas`
+--
+ALTER TABLE `presupuestosventas`
+  MODIFY `idPresupuesto` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `presupuestosventasproductos`
+--
+ALTER TABLE `presupuestosventasproductos`
+  MODIFY `idPVP` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `productoscomprados`
@@ -306,6 +464,12 @@ ALTER TABLE `productoscomprados`
 --
 ALTER TABLE `productoscreados`
   MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `productosutilizadosproduccion`
+--
+ALTER TABLE `productosutilizadosproduccion`
+  MODIFY `idProductosUtilizadosOrden` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
@@ -324,47 +488,82 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- Filtros para la tabla `facturacomprasproductos`
+--
+ALTER TABLE `facturacomprasproductos`
+  ADD CONSTRAINT `FK_idf_fac` FOREIGN KEY (`idFactura`) REFERENCES `facturascompras` (`idFactura`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_idp_pro` FOREIGN KEY (`idProducto`) REFERENCES `productoscomprados` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `facturascompras`
 --
 ALTER TABLE `facturascompras`
-  ADD CONSTRAINT `FK_pCo_id` FOREIGN KEY (`idPresupuestoCompra`) REFERENCES `presupuestoscompras` (`idPresupuesto`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_fco_id` FOREIGN KEY (`idComprador`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_fco_pro` FOREIGN KEY (`idProveedor`) REFERENCES `proveedores` (`idProveedor`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `facturasventas`
 --
 ALTER TABLE `facturasventas`
-  ADD CONSTRAINT `FK_pVe_id` FOREIGN KEY (`idPresupuestoVenta`) REFERENCES `presupuestosventas` (`idPresupuesto`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_fve_id` FOREIGN KEY (`idVendedor`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_fve_pro` FOREIGN KEY (`idCliente`) REFERENCES `clientes` (`idCliente`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `facturaventasproductos`
+--
+ALTER TABLE `facturaventasproductos`
+  ADD CONSTRAINT `FK_idv_fac` FOREIGN KEY (`idFactura`) REFERENCES `facturasventas` (`idFactura`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_idv_pro` FOREIGN KEY (`idProducto`) REFERENCES `productoscreados` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `facturaventasproductos_ibfk_1` FOREIGN KEY (`idFactura`) REFERENCES `facturasventas` (`idFactura`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `facturaventasproductos_ibfk_2` FOREIGN KEY (`idProducto`) REFERENCES `productoscreados` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `ordenproduccion`
 --
 ALTER TABLE `ordenproduccion`
-  ADD CONSTRAINT `FK_idProd` FOREIGN KEY (`idProducto`) REFERENCES `productoscomprados` (`idProducto`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_pfi_id` FOREIGN KEY (`idProductoFinal`) REFERENCES `productoscreados` (`idProducto`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_usu_id` FOREIGN KEY (`idProductor`) REFERENCES `usuarios` (`idUsuario`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_opr_id` FOREIGN KEY (`idProductor`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_pfi_idp` FOREIGN KEY (`idProductoFinal`) REFERENCES `productoscreados` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `presupuestoscompras`
 --
 ALTER TABLE `presupuestoscompras`
-  ADD CONSTRAINT `FK_prod_id` FOREIGN KEY (`idProducto`) REFERENCES `productoscomprados` (`idProducto`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_prov_id` FOREIGN KEY (`idProveedor`) REFERENCES `proveedores` (`idProveedor`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_user_id` FOREIGN KEY (`idComprador`) REFERENCES `usuarios` (`idUsuario`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_pco_idU` FOREIGN KEY (`idComprador`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_pco_pro` FOREIGN KEY (`idProveedor`) REFERENCES `proveedores` (`idProveedor`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `presupuestoscomprasproductos`
+--
+ALTER TABLE `presupuestoscomprasproductos`
+  ADD CONSTRAINT `FK_idp_prd` FOREIGN KEY (`idProducto`) REFERENCES `productoscomprados` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_idp_pre` FOREIGN KEY (`idPresupuesto`) REFERENCES `presupuestoscompras` (`idPresupuesto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `presupuestosventas`
 --
 ALTER TABLE `presupuestosventas`
-  ADD CONSTRAINT `FK_cli_id` FOREIGN KEY (`idCliente`) REFERENCES `clientes` (`idCliente`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_pro_id` FOREIGN KEY (`idProducto`) REFERENCES `productoscomprados` (`idProducto`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_usr_id` FOREIGN KEY (`idVendedor`) REFERENCES `usuarios` (`idUsuario`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `presupuestosventas_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `clientes` (`idCliente`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_pve_idU` FOREIGN KEY (`idVendedor`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_pve_pro` FOREIGN KEY (`idCliente`) REFERENCES `clientes` (`idCliente`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `presupuestosventasproductos`
+--
+ALTER TABLE `presupuestosventasproductos`
+  ADD CONSTRAINT `FK_pvp_prd` FOREIGN KEY (`idProducto`) REFERENCES `productoscreados` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_pvp_pre` FOREIGN KEY (`idPresupuesto`) REFERENCES `presupuestosventas` (`idPresupuesto`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `productosutilizadosproduccion`
+--
+ALTER TABLE `productosutilizadosproduccion`
+  ADD CONSTRAINT `FK_pup_iPU` FOREIGN KEY (`idProductoUtilizado`) REFERENCES `productoscomprados` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_pup_idO` FOREIGN KEY (`idOrden`) REFERENCES `ordenproduccion` (`idOrden`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD CONSTRAINT `FK_dep_id` FOREIGN KEY (`idDepartamento`) REFERENCES `departamentos` (`idDepartamento`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_dep_id` FOREIGN KEY (`idDepartamento`) REFERENCES `departamentos` (`idDepartamento`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
