@@ -60,8 +60,8 @@ def produccionAnual(db):
         contar=0
         contadordos +=1
 
-    print(lista)
-    print(resultadoconsulta)
+   # print(lista)
+   # print(resultadoconsulta)
 
     a = np.array(lista)
    # print("shape = ", np.shape(a))
@@ -111,8 +111,8 @@ def produccionAnual(db):
         leyenda.append(proxyColores[i])
         i=i+1
 
-    print(etiquetas)
-    print(valores)
+  #  print(etiquetas)
+   # print(valores)
 
     width= 0.20
 

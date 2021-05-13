@@ -1,17 +1,16 @@
-from VENTAS import AddCliente, AddPresupuestoVenta, FacturarVenta
+from VENTAS import AddCliente, AddPresupuestoVenta, FacturarVenta, GraficaVentas
 
 
 def RolVendedor(db):
 
     opcVend = -1
-    while opcVend == -1 or opcVend < 6:
+    while opcVend == -1 or opcVend < 5:
         print("\n ------------ VENTAS -----------------\n"
           "\n     1. Añadir Cliente "
           "\n     2. Crear presupuesto para venta"
           "\n     3. Facturar una venta."
           "\n     4. Grafica Importes/Vendedores"
-          "\n     5. Cambiar contraseña OJO QUIZAS QUITAR"
-          "\n     6. Salir\n"
+          "\n     5. Salir\n"
           "\n -------ELIGE UNA OPCION: -----------\n")
 #--------------******************************OJO CON EL WHILE ***************************************************
 
@@ -37,20 +36,8 @@ def RolVendedor(db):
     # ---------------------------opcion 4 -  Grafico Ventas--------------------------
         elif (opcVend - 1) == 3:
             # vamos a --> VENTAS - GraficaVentas - GrafVentas()
-          #  if ExisteFile.checkFileExistance('Archivos/facturasVentas.csv'):
-           #     GraficaVentas.GrafVentas()
 
-           # else:
-           #     print("No hay facturas de ventas, no se mostrará nada.")
-
-
+            GraficaVentas.GrafVentas(db)
             opcVend = -1
-      # ---------------------------opcion 5 -  Cambio contraseña--------------------------
-        elif (opcVend - 1) == 4:
-    # vamos a --> OPCIONESVENDEDOR - GraficaVentas - GrafVentas()
-            #if ExisteFile.checkFileExistance('Archivos/facturasVentas.csv'):
 
 
-
-            opcVend = -1
-    #

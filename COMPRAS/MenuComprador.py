@@ -14,7 +14,7 @@ def RolComprador(db):
           "\n     5. Modificar un presupuesto"
           "\n     6. Eliminar presupuesto "
           "\n     7. Facturar un presupuesto "
-          "\n     8. Producto en stock "
+          "\n     8. Productos en stock "
           "\n     9. Salir\n"
           "\n -------ELIGE UNA OPCION: -----------\n")
 
