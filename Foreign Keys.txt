@@ -60,4 +60,19 @@ TABLA PRESUPUESTOSVENTAS
 
 alter table presupuestosventas add constraint FK_pve_idU foreign key (idVendedor) references usuarios(idUsuario) on update cascade on delete cascade --> ok
 alter table presupuestosventas add constraint FK_pve_pro foreign key (idCliente) references clientes(idCliente) on update cascade on delete cascade -->ok
+
+--------------------------------------------------------------------------------
+
+TABLA FACTURAVENTASPRODUCTOS
+
+alter table facturaventasproductos add constraint FK_idv_fac foreign key (idFactura) references facturasventas (idFactura) on update cascade on delete cascade;-->ok 
+alter table facturaventasproductos add constraint FK_idv_pro foreign key (idProducto) references productoscreados(idProducto) on update cascade on delete cascade; -->ok
+
+
+--------------------------------------------------------------------------------
+
+TABLA FACTURASVENTAS
+
+alter table mibd.facturasventas add constraint FK_fve_id foreign key (idVendedor) references usuarios(idUsuario) on update cascade on delete cascade -->ok
+alter table mibd.facturasventas add constraint FK_fve_pro foreign key (idCliente) references clientes(idCliente) on update cascade on delete cascade -->ok
 --------------------------------------------------------------------------------
