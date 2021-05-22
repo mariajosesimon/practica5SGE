@@ -1,3 +1,11 @@
+"""MENU INICIAL
+Desde este menu nos lleva al login - logon y en funcion del
+resultado del departamento nos mostrará el menu correspondiente.
+
+
+"""
+
+
 import pymysql
 from MenuLogin import MenuLogin
 from LOGIN import Logon, CambiarPass
@@ -5,14 +13,19 @@ from RRHH import MenuRH
 from VENTAS import MenuVendedor
 from COMPRAS import MenuComprador
 from PRODUCCION import MenuProduccion
+from CrearBD import CrearTablas
 
-#CREAMOS LA CONEXION
-db = pymysql.connect(host="127.0.0.1", user="root", db="mibd", port=3306)
+
+#db = pymysql.connect(host="127.0.0.1", user="root", db="mibd", port=3306)
+
+
 
 opc = -1
 
 while opc == -1 or opc < 4:
 
+    CrearTablas()
+    db = pymysql.connect(host="127.0.0.1", user="root", db="mibd2", port=3306)
     MenuLogin()
 
     try:

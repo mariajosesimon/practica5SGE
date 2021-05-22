@@ -64,9 +64,7 @@ def facturarVenta(db):
         productos = cursor.fetchall()
         db.commit()
 
-    #********************************************************************************************************************
-    #*******************AQUI ME DA ERROR, NO ENCUENTRA EL IDFACTURA *****************************************************
-    #********************************************************************************************************************
+
 
         ultimafactura = "select idFactura from facturasventas where nFactura = %s"
         cursor.execute(ultimafactura, str(nfactura))

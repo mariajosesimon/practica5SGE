@@ -1,4 +1,4 @@
-'''Funcion para dar de alta usuarios.
+"""Funcion para dar de alta usuarios.
 Desde el Departamento de RRHH se encargan de dar de alta los usuarios con todos los datos.
 Incluido usuario y contraseña.
 FUNCIONES REUTILIZADAS DE OTROS EJERCICIOS:
@@ -9,7 +9,10 @@ FUNCIONES REUTILIZADAS DE OTROS EJERCICIOS:
 
 CONSULTAS A LA BASE DE DATOS:
 - Hacemos una select para saber los departamentos disponibles.
-'''
+"""
+
+
+
 import hashlib
 
 from datetime import datetime

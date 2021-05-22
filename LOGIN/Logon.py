@@ -1,3 +1,18 @@
+"""
+
+menu logon
+
+# aqui tengo que revisar:
+    # - si el usuario y si la contraseña son correctas accederá al menu correspondiente y además está en activo
+    # - si el usuario existe y la contraseña es incorrecta, podrá ir a cambiar la contraseña.
+    # - si el usuario no existe, debe salir un mensaje indicando que un usuario de RH debe darlo de alta.
+
+   # Voy a utilizar una tabla  USERLOGIN para guardar el usuario logado.
+
+"""
+
+
+
 import pymysql
 import hashlib
 def logarse(db):
@@ -7,10 +22,6 @@ def logarse(db):
     password = input()
 
 
-    # aqui tengo que revisar:
-    # - si el usuario y si la contraseña son correctas accederá al menu correspondiente y además está en activo
-    # - si el usuario existe y la contraseña es incorrecta, podrá ir a cambiar la contraseña.
-    # - si el usuario no existe, debe salir un mensaje indicando que un usuario de RH debe darlo de alta.
 
     cursor = db.cursor()
 
